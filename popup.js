@@ -82,7 +82,6 @@ function getCurrentTabUrl(callback) {
 document.addEventListener('DOMContentLoaded', () => {
   getCurrentTabUrl((url) => {
     var languageInput = document.getElementById('language');
-    var saveButton = document.getElementById("save");
     var disableCheckbox = document.getElementById("disable");
 
     getSavedItem(wiktionaryFilterLanguage, (language) => {
@@ -107,13 +106,6 @@ document.addEventListener('DOMContentLoaded', () => {
     languageInput.addEventListener('change', () => {
       //changeBackgroundColor(dropdown.value);
       saveItem(wiktionaryFilterLanguage, languageInput.value);
-    });
-
-    saveButton.addEventListener('click', () => {
-      if (languageInput && languageInput.value)
-      {
-        saveItem(wiktionaryFilterLanguage, languageInput.value);
-      }
     });
 
     disableCheckbox.addEventListener('change', () => {
