@@ -1,0 +1,62 @@
+<!doctype html>
+<!--
+ This page is shown when the extension button is clicked, because the
+ "browser_action" field in manifest.json contains the "default_popup" key with
+ value "popup.html".
+ -->
+<html>
+  <head>
+    <title>Getting Started Extension's Popup</title>
+    <style type="text/css">
+      body {
+        margin: 10px;
+        white-space: nowrap;
+      }
+
+      h1 {
+        font-size: 15px;
+      }
+
+      #container {
+        align-items: center;
+        /*display: flex;*/
+        
+        /*width: 250px;*/
+      }
+
+      #container > span
+      {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 4px;
+      }
+
+      button {
+        margin-left: 4px;    
+      }
+    </style>
+
+    <!--
+      - JavaScript and HTML must be in separate files: see our Content Security
+      - Policy documentation[1] for details and explanation.
+      -
+      - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
+    -->
+    <script src="popup.js"></script>
+  </head>
+
+  <body>
+    <h1>Wiktionary Language Filter</h1>
+    <div id="container">
+      <span>Value is case-sensitive, so if you are interested in Latin enter "Latin".</span>
+      <span>
+        <label for="language">Preferred Language</label>
+        <input id="language" type="text" />
+        <button id="save">Save</button>
+      </span>
+      <span>
+        <label for="disable">Disable</label><input type="checkbox" id="disable" />
+      </span>
+    </div>
+  </body>
+</html>
