@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
   "name": "Wiktionary Language Filter",
-
+  "default_locale": "en",
   "description": "This simple Chrome extension adds '#MyLanguage' to Wiktionary URLs in order that your browser will always jump to your language.",
-  "version": "0.5",
+  "version": "1.0.0",
   "background":{
     "scripts": ["storage.js", "background.js"]
   },
@@ -18,5 +18,8 @@
     "tabs",
     "declarativeContent",
     "webNavigation"
-  ]
+  ],
+  "icons":{
+    "128": "LargeIcon.png"
+  }
 }
