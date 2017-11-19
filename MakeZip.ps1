@@ -1,1 +1,3 @@
-Compress-Archive -Path .\files\*.* -DestinationPath .\WiktionaryLanguageFilter.zip -Force
+pushd $PSScriptRoot\files
+Compress-Archive -Path * -DestinationPath ..\WiktionaryLanguageFilter.zip -Force
+popd
