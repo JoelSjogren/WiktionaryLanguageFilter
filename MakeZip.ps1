@@ -1,1 +1,1 @@
-Compress-Archive -Path .\files\*.* -DestinationPath .\WiktionaryLanguageFilter.zip
+Compress-Archive -Path .\files\*.* -DestinationPath .\WiktionaryLanguageFilter.zip -Force

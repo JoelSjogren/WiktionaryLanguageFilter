@@ -25,12 +25,13 @@ chrome.runtime.onInstalled.addListener(function() {
 
 (function() {
 	
-    console.log("in function scope");
-
     // https://github.com/sjmulder/urlrewrite-chrome/blob/master/extension/background.js
-    chrome.webNavigation.onBeforeNavigate.addListener(function(details) {
-        console.log("on before listener");
+    // I had to use onCompleted instead of onBeforeNavigate because the top-right search box first does a GET to a search page which then sends a 304 back to the client with the eventual location.
+    // onBeforeNaviate response to the initial GET whereas onCommitted and beyond are responding to the location specified by the 304.
+    chrome.webNavigation.onCompleted.addListener(function(details) {
 
+        if (details.url.indexOf("wiktionary.org/wiki") < 0) return;
+        
         getSavedItem(wiktionaryFilerDisable, (disabled) => {
 
             if (disabled) return;
@@ -38,7 +39,6 @@ chrome.runtime.onInstalled.addListener(function() {
             getSavedItem(wiktionaryFilterLanguage, (language) => {
                 // Don't append if there is already a hash navigation applied or if we're on a special page like "Appendix:Glossary"
                 if (language && details.url.indexOf("#") < 0) {
-                    console.log("saved language is " + language)
                     chrome.tabs.update(details.tabId, { url: details.url + "#" + language });
                 }
                 });
