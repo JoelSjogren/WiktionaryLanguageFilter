@@ -15,6 +15,8 @@ chrome.webNavigation.onBeforeNavigate.addListener(function(details) {
 
 var wiktionaryFilterLanguage = "dmp.wiktionaryFilter.Language";
 var wiktionaryFilterDisable = "dmp.wiktionaryFitler.Disable"
+var wiktionaryFilterPrune = "dmp.wiktionaryFilter.Prune";
+var wiktionaryFilterPruneExcept = "dmp.wiktionaryFitler.PruneExcept";
 
 function getSavedItem(key, callback) {
   // See https://developer.chrome.com/apps/storage#type-StorageArea. We check
@@ -83,6 +85,8 @@ document.addEventListener('DOMContentLoaded', () => {
   getCurrentTabUrl((url) => {
     var languageInput = document.getElementById('language');
     var disableCheckbox = document.getElementById("disable");
+    var pruneCheckbox = document.getElementById("prune");
+    var pruneExceptInput = document.getElementById('prune-except');
 
     getSavedItem(wiktionaryFilterLanguage, (language) => {
       if (language) {
@@ -101,6 +105,21 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    getSavedItem(wiktionaryFilterPrune, (prune) => {
+      if (prune) {
+        pruneCheckbox.checked = prune;
+      }
+      else {
+        pruneCheckbox.checked = false;
+      }
+    });
+
+    getSavedItem(wiktionaryFilterPruneExcept, (pruneExcept) => {
+      if (pruneExcept) {
+        pruneExceptInput.value = pruneExcept;
+      }
+    });
+
     // Ensure the background color is changed and saved when the dropdown
     // selection changes.
     languageInput.addEventListener('change', () => {
@@ -111,6 +130,14 @@ document.addEventListener('DOMContentLoaded', () => {
     disableCheckbox.addEventListener('change', () => {
       //changeBackgroundColor(dropdown.value);
       saveItem(wiktionaryFilterDisable, disableCheckbox.checked);
+    });
+
+    pruneCheckbox.addEventListener('change', () => {
+      saveItem(wiktionaryFilterPrune, pruneCheckbox.checked);
+    });
+
+    pruneExceptInput.addEventListener('change', () => {
+      saveItem(wiktionaryFilterPruneExcept, pruneExceptInput.value);
     });
   });
 });

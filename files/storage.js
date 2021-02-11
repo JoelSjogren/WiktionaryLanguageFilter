@@ -1,5 +1,7 @@
 var wiktionaryFilterLanguage = "dmp.wiktionaryFilter.Language";
 var wiktionaryFilerDisable = "dmp.wiktionaryFitler.Disable"
+var wiktionaryFilterPrune = "dmp.wiktionaryFilter.Prune";
+var wiktionaryFilterPruneExcept = "dmp.wiktionaryFitler.PruneExcept";
 
 function getSavedItem(key, callback) {
   // See https://developer.chrome.com/apps/storage#type-StorageArea. We check

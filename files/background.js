@@ -44,6 +44,19 @@ chrome.runtime.onInstalled.addListener(function() {
                 });
 
         });
+
+	if (details.url.indexOf("en.wiktionary.org/wiki") < 0) return;
+
+	getSavedItem(wiktionaryFilterPrune, (prune) => {
+	    if (!prune) return;
+	    getSavedItem(wiktionaryFilterPruneExcept, (pruneExcept) => {
+		let pruneExceptList = pruneExcept.split(', ');
+		chrome.tabs.sendMessage(details.tabId, {
+		    text: 'prune',
+		    pruneExcept: pruneExceptList
+		}, null);
+	    });
+	});
     });
 
 })();

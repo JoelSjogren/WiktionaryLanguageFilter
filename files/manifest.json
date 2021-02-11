@@ -6,7 +6,10 @@
   "background":{
     "scripts": ["storage.js", "background.js"]
   },
-  
+  "content_scripts": [{
+    "matches": ["*://*.wiktionary.org/*"],
+    "js": ["content.js"]
+  }],
   "page_action": {
     "default_icon": "icons/Icon_19.png",
     "default_popup": "popup.html"
