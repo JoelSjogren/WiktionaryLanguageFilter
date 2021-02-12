@@ -46,6 +46,7 @@ chrome.runtime.onInstalled.addListener(function() {
         });
 
 	if (details.url.indexOf("en.wiktionary.org/wiki") < 0) return;
+	if (details.url.indexOf("en.wiktionary.org/wiki/Appendix:") >= 0) return;
 
 	getSavedItem(wiktionaryFilterPrune, (prune) => {
 	    if (!prune) return;
