@@ -3,7 +3,12 @@
 
 However when a given word is used in multiple languages, such as [sollen](https://en.wiktionary.org/wiki/sollen), it can be a annoying to navigate to your target language all the time.
 
-This simple Chrome extension will allow you to set your preferred language, and when viewing a definition page will automatically scroll your browser to the correct definition.
+This Chrome extension has two ways to solve this problem:
+
+* It will automatically scroll your browser to your preferred language
+* It will remove all content not related to to one or more preferred languages
+
+The choice is up to you and how you prefer to use Wiktionary.
 
 ## Usage
 
