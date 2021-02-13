@@ -2,19 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-chrome.webNavigation.onBeforeNavigate.addListener(function(details) {
-        console.log("on before listener");
-        getSavedItem((language) => {
-        if (language) {
-            console.log("saved language is " + language)
-            chrome.tabs.update(details.tabId, { url: details.url + "#" + language });
-        }
-        });
-
-    });
-
-var wiktionaryFilterLanguage = "dmp.wiktionaryFilter.Language";
-var wiktionaryFilterDisable = "dmp.wiktionaryFitler.Disable"
+const wiktionaryFilterLanguage = "dmp.wiktionaryFilter.Language";
+const wiktionaryFilterDisable = "dmp.wiktionaryFitler.Disable"
 
 function getSavedItem(key, callback) {
   // See https://developer.chrome.com/apps/storage#type-StorageArea. We check
@@ -25,12 +14,6 @@ function getSavedItem(key, callback) {
   });
 }
 
-/**
- * Sets the given background color for url.
- *
- * @param {string} url URL for which background color is to be saved.
- * @param {string} color The background color to be saved.
- */
 function saveItem(key, value) {
   var items = {};
   items[key] = value;
@@ -39,36 +22,6 @@ function saveItem(key, value) {
   // background color is saved.
   chrome.storage.sync.set(items);
 
-  //console.log("saving language: " + language)
-}
-
-
-/**
- * Get the current URL.
- *
- * @param {function(string)} callback called when the URL of the current tab
- *   is found.
- */
-function getCurrentTabUrl(callback) {
-  // Query filter to be passed to chrome.tabs.query - see
-  // https://developer.chrome.com/extensions/tabs#method-query
-  var queryInfo = {
-    active: true,
-    currentWindow: true
-  };
-
-  chrome.tabs.query(queryInfo, (tabs) => {
-    callback();
-  });
-
-  // Most methods of the Chrome extension APIs are asynchronous. This means that
-  // you CANNOT do something like this:
-  //
-  // var url;
-  // chrome.tabs.query(queryInfo, (tabs) => {
-  //   url = tabs[0].url;
-  // });
-  // alert(url); // Shows "undefined", because chrome.tabs.query is async.
 }
 
 // This extension loads the saved background color for the current tab if one
@@ -80,20 +33,18 @@ function getCurrentTabUrl(callback) {
 // chrome.storage.local allows the extension data to be synced across multiple
 // user devices.
 document.addEventListener('DOMContentLoaded', () => {
-  getCurrentTabUrl((url) => {
+
     var languageInput = document.getElementById('language');
     var disableCheckbox = document.getElementById("disable");
 
     getSavedItem(wiktionaryFilterLanguage, (language) => {
       if (language) {
-        //console.log("saved language is " + language)
         languageInput.value = language;
       }
     });
 
     getSavedItem(wiktionaryFilterDisable, (disabled) => {
       if (disabled) {
-        //console.log("saved language is " + language)
         disableCheckbox.checked = disabled;
       }
       else {
@@ -101,16 +52,16 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Ensure the background color is changed and saved when the dropdown
-    // selection changes.
     languageInput.addEventListener('change', () => {
-      //changeBackgroundColor(dropdown.value);
-      saveItem(wiktionaryFilterLanguage, languageInput.value);
+      
+      if (languageInput.value) {
+        console.log("Updating language to " + languageInput.value);
+        saveItem(wiktionaryFilterLanguage, languageInput.value);
+      }        
     });
 
     disableCheckbox.addEventListener('change', () => {
-      //changeBackgroundColor(dropdown.value);
       saveItem(wiktionaryFilterDisable, disableCheckbox.checked);
     });
-  });
+
 });
