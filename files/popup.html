@@ -45,17 +45,38 @@
   <body>
     <h1>Wiktionary Language Filter</h1>
     <div id="container">
-      <span>Value is case-sensitive, so if you are interested in Latin enter "Latin".</span>
-      <span>
-        <label for="language">Preferred Language</label>
+      <p>There are two modes to choose from: Jumping and Pruning.  Jumping will scroll your browser to your desired lanauge.  
+        Pruning will remove all content not related to your language(s).</p>
+      <p>Value is case-sensitive, so if you are interested in Latin enter "Latin".</p>
+
+      <div>
+        <label for="mode">Mode</label>
+        <select name="mode" id="mode">
+          <option value="jump">Jump</option>
+          <option value="prune">Prune</option>
+        </select>
+      </div>
+      
+      <div>
+        <label for="language">Jumping Preferred Language</label>
         <input id="language" type="text" />
-      </span>
-      <span>
-        <label for="disable">Disable</label><input type="checkbox" id="disable" />
-      </span>
+      </div>
+      
+      <div>
+        <p></p>Use a comma-separated list for your pruning exceptions.</p>
+        <span>
+          <label for="prune-except">Language Pruning Exceptions</label><input type="text" id="prune-except" />
+        </span>
+      </div>
+      
+      <div>
+        <label for="disable">Disable all behavior</label><input type="checkbox" id="disable" />
+      </div>
+
       <p>
         Settings are saved automatically.  Reload the page to see the extension do its thing!
       </p>
+      
     </div>
   </body>
 </html>

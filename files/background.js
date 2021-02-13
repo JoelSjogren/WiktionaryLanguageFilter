@@ -1,6 +1,9 @@
 // Copyright (c) 2011 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
+
+// Notes on storage.js - the background script has access to it but popup.js does not.  Perhaps because the background scripts are not permanently loaded?
+
 // When the extension is installed or upgraded ...
 chrome.runtime.onInstalled.addListener(function () {
   // Replace all rules ...
@@ -29,7 +32,9 @@ chrome.runtime.onInstalled.addListener(function () {
   // onBeforeNaviate response to the initial GET whereas onCommitted and beyond are responding to the location specified by the 304.
   chrome.webNavigation.onCompleted.addListener(function (details) {
     console.log("in! " + details.url);
+
     if (details.url.indexOf("wiktionary.org/wiki") < 0) return;
+    if (details.url.indexOf("wiktionary.org/wiki/Appendix:") >= 0) return;
 
     getSavedItem(wiktionaryFilerDisable, (disabled) => {
 
@@ -37,23 +42,43 @@ chrome.runtime.onInstalled.addListener(function () {
 
       if (disabled) return;
 
-      getSavedItem(wiktionaryFilterLanguage, (language) => {
-        if (language)
-        {
-          console.log(`Sending scroll message for  '${language}'`)
-          
-          chrome.tabs.sendMessage(details.tabId, {
-            text: 'scroll',
-            language: language
-          }, null);
+      getSavedItem(wiktionaryFilterMode, (mode) => {
+        if (!mode) {
+          console.log("mode is not set!");
+          return;
+        };
+
+        if (mode === "prune") {
+          getSavedItem(wiktionaryFilterPruneExcept, (pruneExcept) => {
+            
+            let pruneExceptList 
+              = pruneExcept
+                .split(',')
+                .map((s) => s.trim());
+
+            chrome.tabs.sendMessage(details.tabId, {
+              text: 'prune',
+              pruneExcept: pruneExceptList
+            }, null);
+          });
         }
-        else{
-          console.log("Language not set!");
+        else {
+          getSavedItem(wiktionaryFilterLanguage, (language) => {
+            if (language) {
+              console.log(`Sending scroll message for  '${language}'`)
+
+              chrome.tabs.sendMessage(details.tabId, {
+                text: 'scroll',
+                language: language
+              }, null);
+            }
+            else {
+              console.log("Language not set!");
+            }
+          });
         }
       });
-
     });
   });
-
 })();
 
