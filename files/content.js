@@ -8,7 +8,11 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
 
         if (header) {
             console.log("found it!")
-            header.scrollIntoView(true);
+	    if (document.URL.indexOf("#") < 0) {
+		header.scrollIntoView(true);
+	    } else {
+		console.log("but ignoring it!")
+	    }
         }
         else {
             console.log(`Unable to find ${msg.language}`);
