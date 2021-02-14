@@ -9,8 +9,7 @@
     <title>Wiktionary Language Filter Popup</title>
     <style type="text/css">
       body {
-        margin: 10px;
-        white-space: nowrap;
+        margin: 10px; 
       }
 
       h1 {
@@ -18,17 +17,11 @@
       }
 
       #container {
-        align-items: center;
-        /*display: flex;*/
-        
-        /*width: 250px;*/
+        width: 350px;        
       }
 
-      #container > span
-      {
-          display: flex;
-          justify-content: space-between;
-          margin-bottom: 4px;
+      #container > div {
+        margin-bottom: 4px;
       }
 
     </style>
@@ -45,17 +38,18 @@
   <body>
     <h1>Wiktionary Language Filter</h1>
     <div id="container">
-      <span>Value is case-sensitive, so if you are interested in Latin enter "Latin".</span>
-      <span>
+      <div>Value is case-sensitive, so if you are interested in Latin enter "Latin".</div>
+      <div>
         <label for="language">Preferred Language</label>
         <input id="language" type="text" />
-      </span>
-      <span>
-        <label for="disable">Disable</label><input type="checkbox" id="disable" />
-      </span>
-      <p>
+      </div>
+      <div>
+        <label for="disable">Disable</label>
+        <input type="checkbox" id="disable" />
+      </div>
+      <div>
         Settings are saved automatically.  Reload the page to see the extension do its thing!
-      </p>
+      </div>
     </div>
   </body>
 </html>
