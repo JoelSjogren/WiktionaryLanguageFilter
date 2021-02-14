@@ -16,6 +16,9 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
     }
 
     if (msg.text === 'prune') {
+	// decide whether to prune at all
+	if (allLanguagesWouldBePruned(msg.pruneExcept)) return;
+	
         // prune table of contents
         pruneTOC(msg.pruneExcept);
 
@@ -32,6 +35,10 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
         pruneCategories(msg.pruneExcept);
     }
 });
+
+function allLanguagesWouldBePruned(pruneExcept) {
+    return !pruneExcept.some((lang) => document.getElementById(lang));
+}
 
 function shouldBePruned(e, pruneExcept) {
     if (e.children.length < 2) return false;
