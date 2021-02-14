@@ -16,8 +16,17 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
     }
 
     if (msg.text === 'prune') {
-	// decide whether to prune at all
-	if (allLanguagesWouldBePruned(msg.pruneExcept)) return;
+	// fine-tuning in exceptional cases
+	// 1. avoid pruning explicitly requested languages
+	let hash_idx = document.URL.indexOf("#");
+	if (hash_idx >= 0) {
+	    msg.pruneExcept.push(document.URL.substr(hash_idx + 1));
+	}
+	// 2. avoid pruning everything
+	if (allLanguagesWouldBePruned(msg.pruneExcept)) {
+	    document.getElementById("bodyContent").insertAdjacentText("afterbegin", "(Note: Pruning temporarily disabled because no results matched.)");
+	    return;
+	}
 	
         // prune table of contents
         pruneTOC(msg.pruneExcept);
