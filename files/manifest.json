@@ -19,6 +19,9 @@
       "matches": [
         "*://*.wiktionary.org/wiki/*"
       ],
+      "exclude_matches": [
+        "*://*.wiktionary.org/wiki/*:*"
+      ],
       "js": [
         "content.js"
       ]

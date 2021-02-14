@@ -1,82 +1,97 @@
-<!doctype html>
+<!DOCTYPE html>
 <!--
  This page is shown when the extension button is clicked, because the
  "browser_action" field in manifest.json contains the "default_popup" key with
  value "popup.html".
  -->
 <html>
-  <head>
-    <title>Wiktionary Language Filter Popup</title>
-    <style type="text/css">
-      body {
-        margin: 10px;
-        white-space: nowrap;
+	<head>
+		<title>Wiktionary Language Filter Popup</title>
+		<style type="text/css">
+			body {
+				margin: 10px;
+			}
+			
+			#container {
+				width: 350px;
+			}
+
+			#container > div {
+				margin-bottom: 4px;
+			}
+
+      #container dl {
+        margin-left: 4px;
       }
 
-      h1 {
-        font-size: 15px;
+      #container dt {
+        margin-left: 8px;
       }
 
-      #container {
-        align-items: center;
-        /*display: flex;*/
-        
-        /*width: 250px;*/
-      }
+		</style>
 
-      #container > span
-      {
-          display: flex;
-          justify-content: space-between;
-          margin-bottom: 4px;
-      }
-
-    </style>
-
-    <!--
+		<!--
       - JavaScript and HTML must be in separate files: see our Content Security
       - Policy documentation[1] for details and explanation.
       -
       - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
     -->
     <script src="popup.js"></script>
-  </head>
+    <script src="storage.js"></script>
+	</head>
 
-  <body>
-    <h1>Wiktionary Language Filter</h1>
-    <div id="container">
-      <p>There are two modes to choose from: Jumping and Pruning.  Jumping will scroll your browser to your desired lanauge.  
-        Pruning will remove all content not related to your language(s).</p>
-      <p>Value is case-sensitive, so if you are interested in Latin enter "Latin".</p>
+	<body>
+		<h1>Wiktionary Language Filter</h1>
+		<div id="container">
+			<div>
+				This extension offers two ways to make Wiktionary easier to use for
+				those learning a language:
+			</div>
+			<div>
+				<dl>
+					<dt>Jumping</dt>
+					<dd>Scrolls your browser to your desired language</dd>
+					<dt>Prune</dt>
+					<dd>Removes all content not related to your selected language(s)</dd>
+				</dl>
+			</div>
 
-      <div>
-        <label for="mode">Mode</label>
-        <select name="mode" id="mode">
-          <option value="jump">Jump</option>
-          <option value="prune">Prune</option>
-        </select>
-      </div>
-      
-      <div>
-        <label for="language">Jumping Preferred Language</label>
-        <input id="language" type="text" />
-      </div>
-      
-      <div>
-        <p></p>Use a comma-separated list for your pruning exceptions.</p>
-        <span>
-          <label for="prune-except">Language Pruning Exceptions</label><input type="text" id="prune-except" />
-        </span>
-      </div>
-      
-      <div>
-        <label for="disable">Disable all behavior</label><input type="checkbox" id="disable" />
-      </div>
+			<div>
+				The two modes can be used by themselves or together - your choice.
+			</div>
 
-      <p>
-        Settings are saved automatically.  Reload the page to see the extension do its thing!
-      </p>
-      
-    </div>
-  </body>
+			<div class="modeArea">
+				<h2>Jumping</h2>
+				<div>
+					<label for="language">Jumping Preferred Language: </label>
+					<input id="language" type="text" />
+				</div>
+				<div>
+					<label for="disableJump">Disable Jump</label>
+					<input type="checkbox" id="disableJump" />
+				</div>
+			</div>
+
+			<div class="modeArea">
+				<h2>Pruning</h2>
+				<div>
+					<label for="prune-except">Prune all languages except: </label>
+					<input type="text" id="prune-except" />
+				</div>
+				<div>
+					<i>Comma-separate multiple languages, .e.g "English, French"</i>
+				</div>
+
+				<div>
+					<label for="disable">Disable Prune</label>
+					<input type="checkbox" id="disablePrune" />
+				</div>
+			</div>
+
+			<div>
+				Settings are saved automatically. Reload the page to see the extension
+				do its thing!
+			</div>
+		</div>
+	</body>
 </html>

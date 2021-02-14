@@ -33,52 +33,46 @@ chrome.runtime.onInstalled.addListener(function () {
   chrome.webNavigation.onCompleted.addListener(function (details) {
     console.log("in! " + details.url);
 
+    // don't send events on not relevant pages
     if (details.url.indexOf("wiktionary.org/wiki") < 0) return;
-    if (details.url.indexOf("wiktionary.org/wiki/Appendix:") >= 0) return;
 
-    getSavedItem(wiktionaryFilerDisable, (disabled) => {
+    getSavedItem(wiktionaryFilterDisableJump, (disableJump) => {
 
-      console.log("disabled? " + disabled);
+      if (disableJump) return;
 
-      if (disabled) return;
+      getSavedItem(wiktionaryFilterJumpLanguage, (language) => {
+        if (language) {
+          console.log(`Sending scroll message for  '${language}'`)
 
-      getSavedItem(wiktionaryFilterMode, (mode) => {
-        if (!mode) {
-          console.log("mode is not set!");
-          return;
-        };
-
-        if (mode === "prune") {
-          getSavedItem(wiktionaryFilterPruneExcept, (pruneExcept) => {
-            
-            let pruneExceptList 
-              = pruneExcept
-                .split(',')
-                .map((s) => s.trim());
-
-            chrome.tabs.sendMessage(details.tabId, {
-              text: 'prune',
-              pruneExcept: pruneExceptList
-            }, null);
-          });
+          chrome.tabs.sendMessage(details.tabId, {
+            text: 'scroll',
+            language: language
+          }, null);
         }
         else {
-          getSavedItem(wiktionaryFilterLanguage, (language) => {
-            if (language) {
-              console.log(`Sending scroll message for  '${language}'`)
-
-              chrome.tabs.sendMessage(details.tabId, {
-                text: 'scroll',
-                language: language
-              }, null);
-            }
-            else {
-              console.log("Language not set!");
-            }
-          });
+          console.log("Language not set!");
         }
       });
     });
+
+    getSavedItem(wiktionaryFilterDisablePrune, (disablePrune) => {
+      if (disablePrune) return;
+
+      getSavedItem(wiktionaryFilterPruneExcept, (pruneExcept) => {
+
+        let pruneExceptList
+          = pruneExcept
+            .split(',')
+            .map((s) => s.trim());
+        
+        chrome.tabs.sendMessage(details.tabId, {
+          text: 'prune',
+          pruneExcept: pruneExceptList
+        }, null);
+      });
+
+    });
+
   });
 })();
 
