@@ -41,12 +41,18 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
 
         // prune categories at the end
         pruneCategories(msg.pruneExcept);
+
+	// prune all tables of translations
+	pruneTranslations(msg.pruneExcept);
     }
 });
 
 function allLanguagesWouldBePruned(pruneExcept) {
     return !pruneExcept.some((lang) => document.getElementById(lang));
 }
+
+
+// BODY
 
 function shouldBePruned(e, pruneExcept) {
     if (e.children.length < 2) return false;
@@ -70,6 +76,9 @@ function pruneSection(e) {
     return e;
 }
 
+
+// TOC
+
 function pruneTOC(pruneExcept) {
     let toc = Array.from(document.querySelector("H2").parentElement.nextElementSibling.children);
 
@@ -80,6 +89,9 @@ function pruneTOC(pruneExcept) {
         e.remove();
     }
 }
+
+
+// CATEGORIES
 
 function pruneCategories(pruneExcept) {
     let cats = Array.from(document.getElementById('catlinks').children[0].children[1].children);
@@ -92,4 +104,38 @@ function pruneCategories(pruneExcept) {
 
 function leaveCategory(cat, pruneExcept) {
     return pruneExcept.some((lang) => cat.textContent.indexOf(lang) >= 0);
+}
+
+
+// TRANSLATIONS
+
+function pruneTranslations(pruneExcept) {
+    forEachTry(document.getElementsByClassName("translations"), (table) => {
+	forEachTry(table.children[0].children[0].children, (col) => {
+	    forEachTry(col.children[0].children, (entry) => {
+		if (!translationLanguageMatches(entry, pruneExcept)) {
+		    entry.remove();
+		}
+	    });
+	});
+    });
+}
+
+function forEachTry(xs, f) {
+    try {
+	Array.from(xs).forEach((x) => {
+	    try {
+		f(x);
+	    } catch (e) {
+		
+	    }
+	});
+    } catch (e) {
+	
+    }
+}
+
+function translationLanguageMatches(entry, langs) {
+    return langs.some((lang) =>
+	entry.childNodes[0].textContent.indexOf(lang + ":") == 0);
 }
